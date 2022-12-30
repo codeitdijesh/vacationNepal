@@ -1,0 +1,68 @@
+{%extends 'main.html'%}
+{%load static%}
+
+{%block content%}
+
+{% if page == 'register' %}
+
+<div class="center">
+    <h1>Register</h1>
+    <form action="{%url 'register'%}" method="post">       
+         {%csrf_token%}
+         {%for field in form%}
+         <div class="form-group">
+           
+          <label for="formInput#text">{{field.label}}</label>
+          
+            {{field}}
+            {% for error in field.errors %}
+            <p style="color: red;">{{error}}</p>
+            {% endfor %}
+           
+          </div> 
+
+
+         {%endfor%}
+    
+      <input type="submit" value="Register">
+      <br><br>
+      <div class="login_link">
+        Already a member? <a href="{%url 'log'%}">Login</a>
+      </div>
+    </form>
+  </div>
+
+{% else %}
+<!-- <form action="{%url 'log'%}" method="POST">
+    {%csrf_token%}
+    <input type="text" name="username" placeholder="Username">
+    <input type="password" name="password">
+     <input type="submit" value="Login">
+     <a href="{%url 'register'%}">Sign Up</a>
+
+</form> -->
+<div class="center">
+    <h1>Login</h1>
+    <form action="{%url 'log'%}" method="POST">   
+        {%csrf_token%}
+       <div class="txt_field">
+        <input type="text" name ='username' required>
+        <span></span>
+        <label>Username</label>
+      </div>
+      <div class="txt_field">
+        <input type="password" name = 'password' required>
+        <span></span>
+        <label>Password</label>
+      </div>
+    
+      <input type="submit" value="Login">
+      <div class="signup_link">
+        Not a member? <a href="{%url 'register'%}">Signup</a>
+      </div>
+    </form>
+  </div>
+{% endif %}
+
+
+{%endblock%}
