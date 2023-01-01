@@ -1,0 +1,15 @@
+{%extends 'main.html'%}
+
+{%block content%}
+<hr>
+
+<h1>delete a package</h1>
+<form action="" method="post">
+    <p>Confirm Deletion of {{package}}</p>
+{%csrf_token%}
+<a href="{%url 'packages'%}">Go Back</a>
+<input type="submit" value="Delete">
+
+</form>
+
+{%endblock%}

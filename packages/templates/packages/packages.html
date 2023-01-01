@@ -1,0 +1,37 @@
+{%extends 'main.html'%}
+
+
+{%block content%}
+
+{%for package in packages%}
+<table>
+    <tr>
+        <th>Package Name</th>
+        <th>Descrip</th>
+        <th>Duration</th>
+        <th>Price</th>
+        <th>featured_img</th>
+        <th>itenary</th>
+        <th>isUnderRated</th>
+    </tr>
+    <tr>
+        <td>{{package.packageName}}</td>
+        <td>{{package.description}}</td>
+        <td>{{package.packageDuration}}</td>
+        <td>{{package.price}}</td>
+        <td>{{package.featured_img.url}}</td>
+        <td>{{package.itenary}}</td>
+        <td>{{package.isUnderRated}}</td>
+        <td><a href="{%url 'updatePackage' package.id%}">Edit </a></td>
+        <td>or</td>
+        <td><a href="{%url 'deletePackage' package.id%}">Delete</a></td>
+    </tr>
+ 
+</table>
+
+{%endfor%}
+
+
+
+
+{%endblock%}
