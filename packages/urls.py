@@ -11,6 +11,7 @@ urlpatterns = [
     path('updatePackage/<str:pk>/',views.updatePackage,name ='updatePackage'),
     path('deletePackage/<str:pk>/',views.deletePackage,name ='deletePackage'),
     path('packages',views.packages,name ='packages'),
+    path('singlePackage/<str:pk>/',views.singlePackage,name ='singlePackage'),
     path('about',views.abtPage ,name ='about'),
     path('services',views.servicePage ,name ='services'),
     ]

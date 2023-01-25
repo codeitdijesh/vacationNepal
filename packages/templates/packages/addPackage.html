@@ -2,12 +2,89 @@
 
 {%block content%}
 
-<h1>add a package</h1>
-<form action="" method="post">
+<h1 style="text-align: center; margin-top: 5vh;">Add a package</h1>
+
+<div class="container">
+<form action="{%url 'addPackage'%}" enctype="multipart/form-data" id="form" method="post">
+  <div class="form-group">
+    <label for="exampleFormControlInput1">Package Name</label>
+    <input type="text" class="form-control" required name="pn" placeholder="">
+  </div> 
+  
+  <div class="form-group">
+    <label for="exampleFormControlInput1">Location</label>
+    <input type="text" class="form-control"  name="location" placeholder="">
+  </div> 
+  <div class="form-group">
+    <label for="exampleFormControlInput1">Package Duration</label>
+    <input type="number" class="form-control" required min="1" name="pd" placeholder="">
+  </div>
+   <div class="form-group">
+    <label for="exampleFormControlInput1">Price</label>
+    <input type="number" class="form-control" required min="0" name="price" placeholder="">
+  </div>
+  <div class="form-group">
+    <label for="exampleFormControlTextarea1">Description</label>
+    <textarea class="form-control" name="desc" rows="3"></textarea>
+  </div>
+  <div class="form-group">
+    <label for="exampleFormControlTextarea1">Is UnderRated?</label>
+    
+
+    <input type="checkbox" name="isUnderRated" class="form-control" name="isUnderRated">
+
+  </div>
 {%csrf_token%}
-{{form.as_p}}
-<input type="submit" value="submit">
+<div class="form-group">
+  <label class="form-label" for="customFile">Default Picture</label>
+  <input type="file" name="defimage" class="form-control" id="customFile" />
+
+</div>
+
+
+<label class="form-label" for="customFile">Upload Other Pictures</label>
+<input type="file" name="image" multiple class="form-control" id="customFile" />
+
+<div class="row mt-4">
+  <div class="form-group col-md-8">
+    <label for="">Add Itenary</label>
+    <input type="text" name="itenary" class="form-control" name ="itenary" placeholder="Itenary" >
+  </div>
+  <div class="form-group col-md-4">
+    <button type="button" onclick="addItenary()" class="btn btn-success mt-3" >Add</button>
+  </div>
+
+</div>
+<div  id="itrow"></div>
+
+<button type="submit" class="btn btn-primary" name ="submit" value="Submit"> Submit</button>
 
 </form>
+</div>
+
+<script>
+  var cur= 0
+  function addItenary(){
+  const  newrow = document.getElementById("itrow")
+  html =`<div class="row mt-3" id ="cr-${cur}">
+  <div class="form-group col-md-8">
+    <input type="text" class="form-control" name ="itenary" placeholder="Itenary" >
+  </div>
+  <div class="form-group col-md-4">
+    <button type="button" onclick="removeItenary(${cur})" class="btn btn-danger mt-3" >Remove</button>
+  </div>
+
+   </div>`
+   newrow.innerHTML+= html
+   cur+=1
+  }
+
+  function removeItenary(id){
+    var element = document.getElementById(`cr-${id}`)
+    element.remove()
+    
+
+  }
+</script>
 
 {%endblock%}

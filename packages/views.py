@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
-from .models import Packages
-from .forms import Packageform
+from .models import Packages,Images
+# from .forms import Packageform
+import json
 # Create your views here.
 def home(request):
     # packages= Package.objects.all()
@@ -12,43 +13,79 @@ def home(request):
 def abtPage(request):
     return render(request,'packages/about.html')
 
+def singlePackage(request,pk):
+    packageObj = Packages.objects.get(id=pk)
+    print(packageObj)
+    context={'package':packageObj}
+
+    return render(request,'packages/singlePackage.html',context)
+
 
 def servicePage(request):
     return render(request,'packages/services.html')
 
 def packages(request):
     package=Packages.objects.all()
+    image=Images.objects.all()
+    
     context={'packages':package}
     return render(request,'packages/packages.html',context)
+
     
 def addPackage(request):
-    form = Packageform()
 
     if request.method=='POST':
-        form = Packageform(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('packages')
+        # form = Packageform(request.POST)
+        itenary=request.POST.getlist('itenary')
+        images= request.FILES.getlist('image')
+        packageName= request.POST.get('pn')
+        defimage= request.FILES.get('defimage')
+        location= request.POST.get('location')
+        packageDuration= request.POST.get('pd')
+        price= request.POST.get('price')
+        description= request.POST.get('desc')
+        isUnderRated= request.POST.get('isUnderRated')
+        if isUnderRated== 'on':
+           isUnderRated= True   
+        else:
+           isUnderRated= False
+        
+        
 
+        iteListStr=""
+        # print(json.dumps(itenary))
+        for ite in itenary:
+           iteListStr+= ite+"#"
 
+        print(iteListStr)   
+        ins= Packages(packageName=packageName,location=location,description=description,defimage=defimage,packageDuration=packageDuration,price=price,isUnderRated= isUnderRated,itenary=iteListStr)
+        
+        ins.save()
 
-    context={'form':form}
-    return render(request,'packages/addPackage.html',context)
+        for image in images:
+           Images.objects.create(packageName=ins,image= image)
+           
+           
+    
+        
+
+    # context={'form':ins}  
+    return render(request,'packages/addPackage.html')
 
 def updatePackage(request,pk):
     package= Packages.objects.get(id=pk)
-    form = Packageform(instance=package)
+    # form = Packageform(instance=package)
 
-    if request.method=='POST':
-        form = Packageform(request.POST,instance=package)
-        if form.is_valid():
-            form.save()
-            return redirect('packages')
+    # if request.method=='POST':
+    #     form = Packageform(request.POST,instance=package)
+    #     if form.is_valid():
+    #         form.save()
+    #         return redirect('packages')
 
 
 
-    context={'form':form}
-    return render(request,'packages/addPackage.html',context)
+    # context={'form':form}
+    return render(request,'packages/addPackage.html')
 
 def deletePackage(request,pk):
   package= Packages.objects.get(id=pk)
