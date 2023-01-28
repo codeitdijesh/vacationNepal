@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from .models import Packages,Images
-# from .forms import Packageform
+from .forms import Packageform
 import json
 # Create your views here.
 def home(request):
@@ -15,8 +15,13 @@ def abtPage(request):
 
 def singlePackage(request,pk):
     packageObj = Packages.objects.get(id=pk)
+    images=Images.objects.filter(packageName=packageObj)
+    itenary= packageObj.itenary.split("#")
+    print(itenary)
     print(packageObj)
-    context={'package':packageObj}
+    context={'package':packageObj,
+              'images':images,
+              'itenary':itenary}
 
     return render(request,'packages/singlePackage.html',context)
 
@@ -66,26 +71,23 @@ def addPackage(request):
            Images.objects.create(packageName=ins,image= image)
            
            
-    
-        
-
     # context={'form':ins}  
     return render(request,'packages/addPackage.html')
 
 def updatePackage(request,pk):
     package= Packages.objects.get(id=pk)
-    # form = Packageform(instance=package)
+    form = Packageform(instance=package)
+  
 
-    # if request.method=='POST':
-    #     form = Packageform(request.POST,instance=package)
-    #     if form.is_valid():
-    #         form.save()
-    #         return redirect('packages')
+    if request.method=='POST':
+        print("hello")
+        form = Packageform(request.POST,request.FILES,instance=package)
+        if form.is_valid():
+            form.save()
+            return redirect('packages')
 
-
-
-    # context={'form':form}
-    return render(request,'packages/addPackage.html')
+    context={'form':form}
+    return render(request,'packages/updatePackage.html',context)
 
 def deletePackage(request,pk):
   package= Packages.objects.get(id=pk)

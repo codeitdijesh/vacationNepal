@@ -7,7 +7,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.urls import conf
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm,Guideform
+from django.views.decorators.csrf import csrf_exempt
+# from .models import GuideInfo
+
 
 # Create your views here.
 def loginUser(request):
@@ -41,8 +44,9 @@ def loginUser(request):
 def logoutUser(request):
     logout(request)
     messages.info(request, 'User was logged out!')
+  
     return redirect('log')
-
+@csrf_exempt
 def registerUser(request):
     page = 'register'
     form = CustomUserCreationForm()
@@ -52,6 +56,8 @@ def registerUser(request):
         if form.is_valid():
             user = form.save(commit=False)
             user.username = user.username.lower()
+            user.first_name=form.cleaned_data.get('first_name')
+            user.last_name=form.cleaned_data.get('last_name')
             user.save()
 
             messages.success(request, 'User account was created!')
@@ -65,3 +71,26 @@ def registerUser(request):
 
     context = {'page': page, 'form': form}
     return render(request,'users/login.html',context)
+
+@login_required(login_url='log')
+def applyGuide(request):
+ form = Guideform()
+ if request.method=='POST':
+    form = Guideform(request.POST, request.FILES)
+    if form.is_valid():
+    
+        form.save()
+        messages.success(request, 'Your request has been send to admin')
+
+        return redirect('home')
+ context= {
+    'form': form
+ }
+ 
+ return render(request,'users/applyGuide.html',context)
+
+def addNotification(newGuide):
+     print(newGuide.name)
+
+
+     
