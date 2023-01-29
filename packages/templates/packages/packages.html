@@ -42,6 +42,12 @@
                             <div class="d-flex justify-content-between">
                                 <h6 class="m-0"><i class="fa fa-star text-primary mr-2"></i>4.5 <small>(250)</small></h6>
                                 <h5 class="m-0">{{package.price}}</h5>
+                                {%if request.user.is_superuser%}
+
+                                <a class="btn btn-primary" href="{%url 'updatePackage' package.id%}">Edit </a>
+                               
+                                <a class="btn btn-danger" href="{%url 'deletePackage' package.id%}">Delete</a>
+                                {%endif%}
                             </div>
                         </div>
                     </div>
@@ -55,42 +61,7 @@
 <!-- Packages End -->
 
 
-{%for package in packages%}
 
-<table>
-    <tr>
-        <th>Package Name</th>
-        <th>Descrip</th>
-        <th>Duration</th>
-        <th>Price</th>
-        <th>featured_img</th>
-        <th>itenary</th>
-        <th>isUnderRated</th>
-    </tr>
-    <tr>
-        <td>{{package.packageName}}</td>
-        <td>{{package.description}}</td>
-        <td>{{package.packageDuration}}</td>
-        <td>{{package.price}}</td>
-        <td>{{package.featured_img.url}}</td>
-        
- 
-    
-   
-        
-        <td>{{package.itenary}}</td>
-      
-         
-        
-        <td>{{package.isUnderRated}}</td>
-        <td><a href="{%url 'updatePackage' package.id%}">Edit </a></td>
-        <td>or</td>
-        <td><a href="{%url 'deletePackage' package.id%}">Delete</a></td>
-    </tr>
- 
-</table>
-
-{%endfor%}
 
 
 

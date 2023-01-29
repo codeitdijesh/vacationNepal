@@ -1,12 +1,16 @@
 from django.db.models.signals import post_save
-from .views import addNotification
-from .models import GuideInfo
+from .models import GuideInfo,guideNoti
+from django.shortcuts import redirect
+
 
 def addGuide(sender,instance,created,**kwargs):
 
     if created:
-     addNotification(instance)
-
+       print(instance)
+       new_notification=guideNoti(guide=instance)
+       new_notification.save()
+       print("added")
+       return redirect('home')
 
 
 

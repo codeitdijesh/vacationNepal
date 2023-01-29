@@ -39,7 +39,7 @@
     <div class="container-fluid position-relative nav-bar p-0">
         <div class="container-lg position-relative p-0 px-lg-3" style="z-index: 9;">
             <nav class="navbar navbar-expand-lg bg-light navbar-light shadow-lg py-3 py-lg-0 pl-3 pl-lg-5">
-                <a href="" class="navbar-brand">
+                <a href="{%url 'home'%}" class="navbar-brand">
                     <h1 class="m-0 text-primary"><span class="text-dark">VACATIO</span>NEPAL</h1>
                 </a>
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
@@ -54,18 +54,32 @@
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Settings</a>
                             <div class="dropdown-menu border-0 rounded-0 m-0">
-                                {% if request.user.is_authenticated %}
+                                
+            
 
+                                {%if request.user.is_authenticated and request.user.guideinfo.approvedByAdmin%}
+                                <a href="{%url 'guideAcc' user.guideinfo.id%}" class="dropdown-item">Your Account</a>
+                                {%else %}
+         
+                                
                                 <a href="{%url 'applyGuide'%}" class="dropdown-item">Apply for Guide</a>
+                                
+                             
                                 {%endif%}
-                                <a href="" class="dropdown-item">Blog Detail</a>
-                                <a href="" class="dropdown-item">Destination</a>
+
+                             
+                                
+    
                                 <a href="" class="dropdown-item">Travel Guides</a>
                                 <a href="" class="dropdown-item">Testimonial</a>
                             </div>
                         </div>
                         {%if request.user.is_superuser%}
-                        <a href="#" class="nav-item nav-link">Notfications</a>
+                        <a href="{%url 'notifications'%}" class="nav-item nav-link">
+                            <h6 style="color:darkorange;" >Notifications<span class="badge bg-primary">{{count}}</span></h6>
+                             
+                        </a>
+                        
                         {%else%}
                         <a href="#" class="nav-item nav-link">Contact</a>
                         {%endif%}

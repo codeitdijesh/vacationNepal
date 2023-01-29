@@ -2,6 +2,8 @@ from django.shortcuts import render,redirect
 from .models import Packages,Images
 from .forms import Packageform
 import json
+from django.contrib.auth.decorators import user_passes_test
+
 # Create your views here.
 def home(request):
     # packages= Package.objects.all()
@@ -36,7 +38,7 @@ def packages(request):
     context={'packages':package}
     return render(request,'packages/packages.html',context)
 
-    
+@user_passes_test(lambda u: u.is_superuser)    
 def addPackage(request):
 
     if request.method=='POST':
@@ -74,21 +76,24 @@ def addPackage(request):
     # context={'form':ins}  
     return render(request,'packages/addPackage.html')
 
+@user_passes_test(lambda u: u.is_superuser)
 def updatePackage(request,pk):
     package= Packages.objects.get(id=pk)
     form = Packageform(instance=package)
   
 
     if request.method=='POST':
-        print("hello")
+        
         form = Packageform(request.POST,request.FILES,instance=package)
         if form.is_valid():
             form.save()
             return redirect('packages')
 
     context={'form':form}
+   
     return render(request,'packages/updatePackage.html',context)
 
+@user_passes_test(lambda u: u.is_superuser)
 def deletePackage(request,pk):
   package= Packages.objects.get(id=pk)
   if request.method=='POST':

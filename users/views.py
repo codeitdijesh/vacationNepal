@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 from django.urls import conf
 from .forms import CustomUserCreationForm,Guideform
 from django.views.decorators.csrf import csrf_exempt
-# from .models import GuideInfo
+from .models import GuideInfo,guideNoti
 
 
 # Create your views here.
@@ -83,14 +83,61 @@ def applyGuide(request):
         messages.success(request, 'Your request has been send to admin')
 
         return redirect('home')
+    else:
+        messages.error(request,'Error') 
  context= {
     'form': form
  }
  
  return render(request,'users/applyGuide.html',context)
 
-def addNotification(newGuide):
-     print(newGuide.name)
+def notifications(request):
+   
+     
+     notifications=guideNoti.objects.all()
+     count=notifications.count()
 
+    
+     context = {'notifications': notifications,
+                  'count':count   }
+     return render(request,'users/notifications.html',context)
 
+def deleteNotification(request,pk):
+   
+    delObj = guideNoti.objects.get(id=pk)
+    delObj.delete()
+
+    return redirect('notifications')
+
+def approveNotification(request,pk):
+  
+    appObj = guideNoti.objects.get(id=pk)
+    print(appObj.guide.id)
+    guideObj=GuideInfo.objects.get(id=appObj.guide.id)
+    guideObj.approvedByAdmin=True
+    guideObj.save()
+    appObj.delete()
+
+    return redirect('notifications')
+
+def guideAcc(request,pk):
+
+    guide=GuideInfo.objects.get(id=pk)
+    form = Guideform(instance=guide)
+    if request.method=='POST':
+     form = Guideform(request.POST,request.FILES,instance=guide)
+    
+     if form.is_valid():
+        form.save()
+        messages.success(request, 'Account Updated')
+        return redirect('home')
+    else:
+        messages.error(request,'Error') 
+
+    context= {
+    'form': form
+    }
+
+    return render(request,'users/updateGuide.html',context)       
+    
      

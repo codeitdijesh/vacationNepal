@@ -13,7 +13,7 @@ provinces= [
         (7, '7'),
     ]
 class GuideInfo(models.Model):
-    #user = models.OneToOneField(User,on_delete=models.CASCADE,null=True)
+    user = models.OneToOneField(User,on_delete=models.CASCADE,null=True)
     name= models.CharField(max_length=100)
     email= models.EmailField(max_length=200,blank=True,null=True)
     phone= models.IntegerField(unique=True)
@@ -31,6 +31,15 @@ class GuideInfo(models.Model):
   
     def __str__(self):
        return self.name
+
+class guideNoti(models.Model):
+    guide= models.ForeignKey(GuideInfo,on_delete=models.RESTRICT)
+    approved=models.BooleanField(default=False)  
+    id=models.UUIDField(default=uuid.uuid4,unique=True,primary_key=True,editable=False)
+    created=models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+       return self.guide.name
+         
 
 
 

@@ -1,0 +1,55 @@
+{%extends 'main.html'%}
+{%load static%}
+
+{%block content%}
+
+
+<div class="container" style="margin-top: 3vh;">
+<div class="accordion" id="accordionExample">
+    {%for n in notifications%}
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingOne">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          {{n}}
+        </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+            <img src="{{n.guide.profileImage.url}}" style=" width: 25%;
+            height: 15%x;
+            border-radius: 50%;
+            border: 2px solid #3ab86a;
+            filter: drop-shadow(0 0 3px #ff5722);" alt="error">
+            <a href="{{n.guide.fbLink}}"> <i class="fab fa-facebook-f fa-2x" style="color: #3b5998;"></i>
+            </a>
+             <a href="{{n.guide.instaLink}}">  <i class="fab fa-instagram fa-2x" style="color: #ac2bac;"></i>
+             </a>
+            <ul class="list-group">
+                <li class="list-group-item">Name :{{n.guide.name}}</li>
+                <li class="list-group-item">Short Intro:{{n.guide.shortIntro}}</li>
+                <li class="list-group-item">Email :{{n.guide.email}}</li>
+                <li class="list-group-item">Phone :{{n.guide.phone}}</li>
+                <li class="list-group-item">Address:{{n.guide.adresss1}},{{n.guide.adresss2}} , Province {{n.guide.province}}</li>
+                <a href="{{n.guide.cvFile.url}}"><li class="list-group-item-info">  CV:{{n.guide.cvFile}}</li>  </a> 
+             
+               
+
+
+
+              </ul>
+              <div class="btn-group" role="group" aria-label="Basic example">
+              <a class="btn btn-primary" href="{%url 'approve-noti' n.id %}">Approve</a>
+              <a class="btn btn-danger" href="{%url 'delete-noti' n.id %}">DELETE</a>
+               
+              </div>
+
+        </div>
+      </div>
+    </div>
+    {%endfor%}
+    
+  </div>
+</div>
+
+
+{%endblock%}

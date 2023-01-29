@@ -1,0 +1,28 @@
+{%extends 'main.html'%}
+
+
+{%block content%}
+
+<div class="container">
+
+    <h1 style="text-align: center;">UPDATE YOUR ACCOUNT</h1>
+    <form action=""  enctype="multipart/form-data" method="post">
+
+
+        {% csrf_token %}
+    
+    {% for field in form %}
+    <!-- Input:Text -->
+    <div class="form-group">
+        <label for="formInput#text">{{field.label}}</label>
+        {{field}}
+    </div>
+    {% endfor %}
+    <input type="submit" class="btn btn-primary" value="Update">
+    
+    </form>
+</div>
+
+
+
+{%endblock%}
