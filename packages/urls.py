@@ -14,6 +14,8 @@ urlpatterns = [
     path('singlePackage/<str:pk>/',views.singlePackage,name ='singlePackage'),
     path('about',views.abtPage ,name ='about'),
     path('services',views.servicePage ,name ='services'),
+    path('newBooking/<str:pk>/',views.newBooking ,name ='newBooking'),
+    path('newBookingPeople/<str:pk>/',views.newBookingPeople,name ='newBookingPeople'),
     ]
 
 urlpatterns+= static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

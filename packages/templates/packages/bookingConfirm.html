@@ -1,0 +1,98 @@
+{%extends 'main.html'%}
+
+
+{%block content%}
+
+<div class="container-fluid">
+   <h2 style="text-align: center;margin-top: 3%; font-family: 'Times New Roman', Times, serif;">Passenger Details</h2>
+    <div class="row">
+      <div class="col-9">
+        <form method="post" action="{%url 'newBookingPeople' pk=ins.id %}">
+          
+            {%csrf_token%}
+
+            {%for i in number%}
+        
+        
+            <div class="form-group row" style="margin-top: 3%;">
+            
+
+            <h5>Passenger {{i}}</h5>
+            <form>
+                <div class="row my-3">
+                    <div class="col-md-6">
+                        <div class="form-outline">
+                            <input type="text" name="firstName" required  id="typeText" class="form-control" />
+                            <label class="form-label" for="typeText">First name</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-outline">
+                            <input type="text" id="typeText" required name="lastName"  class="form-control" />
+                            <label class="form-label" for="typeText">Last name</label>
+                        </div>
+                    </div>
+                </div>
+              
+             
+                <div class="row my-3">
+                    <div class="col-md-4">
+                        <div class="form-outline">
+                            <input type="number" required name="age" min="0" id="typeText" class="form-control" />
+                            <label class="form-label" for="typeText">Age</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-outline">
+                           <select required name="gender" id="">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Others">Others</option>
+                           </select>
+                            <label class="form-label" for="typeText">Gender</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row my-3">
+                    <div class="col-md-6">
+                        <div class="form-outline">
+                            <input type="email" required name="email" id="typeEmail" class="form-control" />
+                            <label class="form-label" for="typeEmail">Email</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-outline">
+                            <input type="tel"  required id="typePhone" class="form-control" />
+                            <label class="form-label" name="phone" for="typePhone">Phone number </label>
+                        </div>
+                    </div>
+                </div>
+                
+       
+           </div>
+           {%endfor%}
+           <input type="submit" name ="submit" value="Submit" class="btn btn-primary">
+        </form>
+         
+      </div>
+      <div class="col" style="margin-right: 3%;">
+      
+            <div class="card-header">
+              Breakdown
+            </div>
+            <div class="card-body">
+              <h5 class="card-title"> <span>Package:</span>{{package.packageName}}</h5>
+              <p class="card-text"> Price :Rs. {{package.price}}</p>
+              <p class="card-text"> Quantity : {{max_number}}</p>
+              <hr>
+              <p class="card-text"> Total :Rs.{{totalprice}} </p>
+              
+             
+            </div>
+          </div>
+     
+    </div>
+  </div>
+
+
+{%endblock%}

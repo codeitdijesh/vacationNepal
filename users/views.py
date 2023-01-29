@@ -12,6 +12,8 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import GuideInfo,guideNoti
 
 
+
+
 # Create your views here.
 def loginUser(request):
     page = 'login'

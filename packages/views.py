@@ -1,8 +1,11 @@
 from django.shortcuts import render,redirect
-from .models import Packages,Images
+from .models import Packages,Images,PackageBooking,packagaBookedpeople
 from .forms import Packageform
 import json
 from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.models import User
+from datetime import datetime, date, timedelta
+
 
 # Create your views here.
 def home(request):
@@ -19,8 +22,6 @@ def singlePackage(request,pk):
     packageObj = Packages.objects.get(id=pk)
     images=Images.objects.filter(packageName=packageObj)
     itenary= packageObj.itenary.split("#")
-    print(itenary)
-    print(packageObj)
     context={'package':packageObj,
               'images':images,
               'itenary':itenary}
@@ -64,7 +65,7 @@ def addPackage(request):
         for ite in itenary:
            iteListStr+= ite+"#"
 
-        print(iteListStr)   
+        
         ins= Packages(packageName=packageName,location=location,description=description,defimage=defimage,packageDuration=packageDuration,price=price,isUnderRated= isUnderRated,itenary=iteListStr)
         
         ins.save()
@@ -102,4 +103,64 @@ def deletePackage(request,pk):
 
   context={'package':package}
   return render(request,'packages/deletePackage.html',context)
+
+
+def newBooking(request,pk):
+
+ package=Packages.objects.get(id=pk)
+ if request.method=='POST':
+   peopleNum = request.POST.get('peopleNum')
+   peopleNum=int(peopleNum)
+   payment=request.POST.get('payment')
+   startDate=request.POST.get('date')
+   startDate = datetime.strptime(startDate, "%m/%d/%Y")
+ 
+   endDate=startDate+ timedelta(days=package.packageDuration)
+   print(startDate,endDate)
+   totalprice=int(package.price) *int(peopleNum)
+   ins=PackageBooking(packageName=package,packageStartDate=startDate,user=request.user,packageEndDate=endDate,peopleAmt=peopleNum,totalPrice=totalprice)
+   ins.save()
+   
+   context={
+    'number':range(1,peopleNum+1),
+    'package':package,
+    'startDate':startDate,
+    'totalprice':totalprice,
+    'max_number':int(peopleNum),
+     'ins':ins
+   }
+
+
+ return  render(request,'packages/bookingConfirm.html',context)
+
+def newBookingPeople(request,pk):
+ 
+
+#  bookingId= PackageBooking.objects.all()
+#  number=bookingId.peopleAmt
+
+ if request.method=='POST':
+   
+   firstName = request.POST.getlist('firstName')
+   lastName = request.POST.getlist('lastName')
+   age= request.POST.getlist('age')
+   gender= request.POST.getlist('gender')
+   email= request.POST.getlist('email')
+   phone= request.POST.getlist('phone')
+ 
+
+   for i in range(len(firstName)):
+     ins=packagaBookedpeople(firstName=firstName[i],lastName=lastName[i],age=age[i],gender=gender[i],email=email[i],phone=phone[i])
+     ins.save()
+     print(i)
+    
+  
+ 
+ return  render(request,'packages/tourConfirmed.html')
+
+
+
+
+ 
+
 

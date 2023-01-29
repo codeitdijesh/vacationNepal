@@ -1,9 +1,16 @@
 from django.db import models
 import uuid
 from json import dumps
+from django.contrib.auth.models import User
+
 
 # Create your models here.
-
+gender= [
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+        ('Others', 'Others'),
+]
+     
 class Packages(models.Model):
     packageName= models.CharField(max_length=100)
     location =models.CharField(max_length=100,null=True,blank=True)
@@ -31,5 +38,31 @@ class Images(models.Model):
        
     def __str__(self):
        return self.image
+
+class PackageBooking(models.Model):
+    packageName=models.ForeignKey(Packages,on_delete=models.RESTRICT)
+    user=models.ForeignKey(User,on_delete=models.RESTRICT)
+    id=models.UUIDField(default=uuid.uuid4,unique=True,primary_key=True,editable=False)
+    packageStartDate = models.DateTimeField(auto_now_add=True)
+    packageEndDate = models.DateTimeField(auto_now_add=True)
+    peopleAmt= models.IntegerField()
+    totalPrice=models.IntegerField()
+
+    def __str__(self):
+       return self.packageName
+
+class packagaBookedpeople(models.Model):
+    PackageBooking=models.ForeignKey(PackageBooking,on_delete=models.RESTRICT)  
+    firstName=models.CharField(max_length=100) 
+    lastName=models.CharField(max_length=100) 
+    age= models.IntegerField()
+    gender=models.CharField(max_length=10,choices=gender,default='Male')
+    email=models.EmailField()
+    phone=models.IntegerField()
+
+    def __str__(self):
+       return self.firstName
+
+
 
    
