@@ -7,7 +7,7 @@
    <h2 style="text-align: center;margin-top: 3%; font-family: 'Times New Roman', Times, serif;">Passenger Details</h2>
     <div class="row">
       <div class="col-9">
-        <form method="post" action="{%url 'newBookingPeople' pk=ins.id %}">
+        <form method="post" action="{%url 'newBookingPeople' ins.id %}">
           
             {%csrf_token%}
 
@@ -62,11 +62,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-outline">
-<<<<<<< Updated upstream
                             <input type="tel"  required name='phone' id="typePhone" class="form-control" />
-=======
-                          
->>>>>>> Stashed changes
                             <label class="form-label" for="typePhone">Phone number </label>
                         </div>
                     </div>

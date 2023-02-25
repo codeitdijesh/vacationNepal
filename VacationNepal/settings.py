@@ -77,7 +77,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'VacationNepal.wsgi.application'
-
+ 
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -119,6 +119,15 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+
+EMAIL_BACKEND= 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST='smtp.gmail.com'
+EMIAL_PORT=578
+EMIAL_USER_TLS=True
+EMAIL_HOST_USER='vacationnepal640@gmail.com'
+EMAIL_HOST_PASSWORD='wkdajcblhltljbiz'
+EMAIL_USE_SSL= False
 
 
 # Static files (CSS, JavaScript, Images)

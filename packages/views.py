@@ -1,10 +1,21 @@
 from django.shortcuts import render,redirect
 from .models import Packages,Images,PackageBooking,packagaBookedpeople
+from users.models import GuideInfo
 from .forms import Packageform
 import json
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
 from datetime import datetime, date, timedelta
+from django.core.mail import send_mail
+from django.conf import settings
+from django.db.models.signals import post_save
+from smtplib import SMTP
+from django.core.mail import get_connection
+
+import smtplib
+
+
+
 
 
 # Create your views here.
@@ -104,6 +115,13 @@ def deletePackage(request,pk):
   context={'package':package}
   return render(request,'packages/deletePackage.html',context)
 
+def ourGuides(request):
+       guides =GuideInfo.objects.all()
+       context={'guides':guides}
+      
+       return render(request,'packages/guides.html',context)
+
+   
 
 def newBooking(request,pk):
 
@@ -136,9 +154,13 @@ def newBooking(request,pk):
 def newBookingPeople(request,pk):
  
 
-#  bookingId= PackageBooking.objects.all()
-#  number=bookingId.peopleAmt
-
+ bookingId= PackageBooking.objects.get(id=pk)
+ 
+ 
+ s=smtplib.SMTP("smtp.gmail.com", 587)
+ s.ehlo()
+ s.starttls()
+ s.login("vacationnepal640@gmail.com", "elrmoybcuqbefmka")
  if request.method=='POST':
    
    firstName = request.POST.getlist('firstName')
@@ -150,17 +172,54 @@ def newBookingPeople(request,pk):
  
 
    for i in range(len(firstName)):
-     ins=packagaBookedpeople(firstName=firstName[i],lastName=lastName[i],age=age[i],gender=gender[i],email=email[i],phone=phone[i])
+     ins=packagaBookedpeople(PackageBooking = bookingId,firstName=firstName[i],lastName=lastName[i],age=age[i],gender=gender[i],email=email[i],phone=phone[i])
      ins.save()
      print(i)
-    
+
+   price= bookingId.totalPrice/bookingId.peopleAmt 
+
+   context={
+      
+      'package':bookingId,
+      'price':price} 
+   
+   subject="HEllo"
+   
+   message="ll "
+ 
+           
+   connection = get_connection()
+   send_mail(
+                    subject,
+                    message,
+                    settings.EMAIL_HOST_USER,
+                    ['di.dk146@gmail.com'],
+                   fail_silently=False,
+                   connection=connection)
+
+                      
+
   
  
- return  render(request,'packages/tourConfirmed.html')
 
+ return  render(request,'packages/tourConfirmed.html',context)
+
+@user_passes_test(lambda u: u.is_superuser)
+def bookings(request):
+   bookings= PackageBooking.objects.all()
+   context={'bookings':bookings}
+
+   return render(request,'packages/bookings.html',context)
+
+@user_passes_test(lambda u: u.is_superuser)
+def deletebooking(request,pk):
+  package= PackageBooking.objects.get(id=pk)
+
+  package.delete()
+  return redirect('bookings')
+       
 
 
 
  
-
 

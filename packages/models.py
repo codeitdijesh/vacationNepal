@@ -40,8 +40,8 @@ class Images(models.Model):
        return self.image
 
 class PackageBooking(models.Model):
-    packageName=models.ForeignKey(Packages,on_delete=models.RESTRICT)
-    user=models.ForeignKey(User,on_delete=models.RESTRICT)
+    packageName=models.ForeignKey(Packages,on_delete=models.CASCADE)
+    user=models.ForeignKey(User,on_delete=models.CASCADE)
     id=models.UUIDField(default=uuid.uuid4,unique=True,primary_key=True,editable=False)
     packageStartDate = models.DateTimeField(auto_now_add=True)
     packageEndDate = models.DateTimeField(auto_now_add=True)
@@ -49,10 +49,10 @@ class PackageBooking(models.Model):
     totalPrice=models.IntegerField()
 
     def __str__(self):
-       return self.packageName
+       return self.packageName.packageName
 
 class packagaBookedpeople(models.Model):
-    PackageBooking=models.ForeignKey(PackageBooking,on_delete=models.RESTRICT)  
+    PackageBooking=models.ForeignKey(PackageBooking,on_delete=models.CASCADE)  
     firstName=models.CharField(max_length=100) 
     lastName=models.CharField(max_length=100) 
     age= models.IntegerField()

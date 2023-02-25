@@ -1,0 +1,96 @@
+{%extends 'main.html'%}
+
+{%load static%}
+{%block content%}
+<div class="container">
+ 
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="invoice-title">
+                <h3 class="pull-right">Invoice details</h3>
+            </div>
+            <hr>
+            <h2>Tour Confirmed <span class="badge bg-secondary"><i class="fa fa-check-circle" style="font-size:48px;color:green"></i>
+            </span></h2>
+            <p>Thank you for booking with Vacation Nepal. Your reservation for the package has been confirmed, we will send you email as soon as we finish reserving hotels for you. If u have any queries do not hesitate to send us an email at VacationNepal640@gmail.com or contact us at +977 980000000.</p>
+            
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <address>
+                    <strong>Billed To:</strong><br>
+                        {{package.user.first_name }}{{package.user.last_name}}<br>
+                        1234 Main<br>
+                        Apt. 4B<br>
+                        Springfield, ST 54321
+                    </address>
+                </div>
+                <div class="col-xs-6 text-left">
+                    <address>
+                    <strong>Invoice No: {{package.id}}</strong><br>
+                       
+                    </address>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <address>
+                        <strong>Payment Method:</strong><br>
+                        Cash|Bank
+                        <span>For Further query :</span> vacationnepal640@gmail.com
+                    </address>
+                </div>
+                <div class="col-xs-6 text-left">
+                    <address>
+                        <strong>Order Date:</strong><br>
+                        {{package.packageStartDate}}<br><br>
+                    </address>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Package summary</strong></h3>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <td><strong>Item</strong></td>
+                                    <td class="text-center"><strong>Price</strong></td>
+                                    <td class="text-center"><strong>Number of people</strong></td>
+                                    <td class="text-right"><strong>Totals</strong></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- foreach ($order->lineItems as $line) or some such thing here -->
+                                <tr>
+                                    <td>{{package.packageName}}</td>
+                                    <td class="text-center">Rs{{price}}</td>
+                                    <td class="text-center">{{package.peopleAmt}}</td>
+                                    <td class="text-right">Rs{{package.totalPrice}}</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td class="no-line"></td>
+                                    <td class="no-line"></td>
+                                    <td class="no-line text-center"><strong>Total</strong></td>
+                                    <td class="no-line text-right">Rs.{{package.totalPrice}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+                    
+{%endblock%}

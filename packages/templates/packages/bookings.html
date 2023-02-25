@@ -1,0 +1,37 @@
+{%extends 'main.html'%}
+
+
+{%block content%}
+
+<h1>Booking Details</h1>
+<table class="table">
+    <thead>
+      <tr>
+       
+        <th scope="col">Package Name</th>
+        <th scope="col">Booked By</th>
+        <th scope="col">Start Date</th>
+        <th scope="col">Total Price</th>
+        <th scope="col">Quantity of People</th>
+      </tr>
+    </thead>
+    <tbody>
+        {%for booking in bookings%}
+      <tr>
+      
+        <td>{{booking}}}</td>
+        <td>{{booking.user}}</td>
+        <td>{{booking.packageStartDate}}</td>
+        <td>{{booking.totalPrice}}</td>
+        <td>{{booking.peopleAmt}}</td>
+        <td> <a style="color:red" href="{%url 'deletebooking' booking.id%}">Delete</a></td>
+        
+       
+      </tr>
+      {%endfor%}
+  
+    </tbody>
+  </table>
+
+
+{%endblock%}

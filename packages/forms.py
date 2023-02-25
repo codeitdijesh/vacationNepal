@@ -8,11 +8,16 @@ class Packageform(forms.ModelForm):
         model=Packages
         fields = "__all__"
 
-     
-    def __init__(self, *args, **kwargs):
-        super(Packageform, self).__init__(*args, **kwargs)
+        # isUnderRated= forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}))
 
-        for name, field in self.fields.items():
-            field.widget.attrs.update({'class': 'form-control'})
+    # def __init__(self, *args, **kwargs):
+    #     super(Packageform, self).__init__(*args, **kwargs)
+      
+        
+    #     for name, field in self.fields.items():
+    #         field.widget.attrs.update({'class': 'form-control'})
+            
+    #     self.isUnderRated.widget.attrs.update({'class':'form-check-input'})    
+       
         
 

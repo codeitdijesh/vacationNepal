@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 import uuid
+from .validators import validate_file_extension,validate_file
+
 
 # Create your models here.
 provinces= [
@@ -21,10 +23,10 @@ class GuideInfo(models.Model):
     adresss2= models.CharField(max_length=200)
     province=models.IntegerField(choices=provinces,default='1')
     profileImage=models.ImageField(null=True,blank=True,default='userdp.png')
-    cvFile= models.FileField(upload_to='cv/')
+    cvFile= models.FileField(upload_to='cv/',validators=[validate_file])
     fbLink= models.CharField(max_length=500,blank=True,null=True)
     instaLink= models.CharField(max_length=500,blank=True,null=True)
-    shortIntro=models.TextField(max_length=500)
+    shortIntro=models.TextField(max_length=100)
     id=models.UUIDField(default=uuid.uuid4,unique=True,primary_key=True,editable=False)
     created=models.DateTimeField(auto_now_add=True)
     approvedByAdmin= models.BooleanField(default=False)
