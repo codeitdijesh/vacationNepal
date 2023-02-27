@@ -219,7 +219,7 @@ def send_email(request):
    send_mail(
       'subject',
       'her is the message', 
-      'vacationnepal640@gmail.com'
+      'vacationnepal640@gmail.com',
       ['di.dk146@gmail.com'],
       fail_silently=False)
    return HttpResponse('Email Sent')
