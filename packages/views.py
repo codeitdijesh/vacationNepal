@@ -11,8 +11,15 @@ from django.conf import settings
 from django.db.models.signals import post_save
 from smtplib import SMTP
 from django.core.mail import get_connection
+from django.http import HttpResponse
+
 
 import smtplib
+from django.core.mail import EmailMessage
+import smtplib
+
+
+
 
 
 
@@ -157,10 +164,7 @@ def newBookingPeople(request,pk):
  bookingId= PackageBooking.objects.get(id=pk)
  
  
- s=smtplib.SMTP("smtp.gmail.com", 587)
- s.ehlo()
- s.starttls()
- s.login("vacationnepal640@gmail.com", "elrmoybcuqbefmka")
+
  if request.method=='POST':
    
    firstName = request.POST.getlist('firstName')
@@ -188,14 +192,7 @@ def newBookingPeople(request,pk):
    message="ll "
  
            
-   connection = get_connection()
-   send_mail(
-                    subject,
-                    message,
-                    settings.EMAIL_HOST_USER,
-                    ['di.dk146@gmail.com'],
-                   fail_silently=False,
-                   connection=connection)
+   send_email(request)
 
                       
 
@@ -217,6 +214,17 @@ def deletebooking(request,pk):
 
   package.delete()
   return redirect('bookings')
+
+def send_email(request):
+   send_mail(
+      'subject',
+      'her is the message', 
+      'vacationnepal640@gmail.com',
+      ['di.dk146@gmail.com'],
+      fail_silently=False)
+   return HttpResponse('Email Sent')
+
+   
        
 
 
